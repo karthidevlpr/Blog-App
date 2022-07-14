@@ -61,7 +61,6 @@ const Post = (props) => {
                 </Alert>
             </Snackbar>
             <div>
-                {!!currentPost &&
                     <Grid sx={{ flexGrow: 1 }} container spacing={1}>
                         <Grid item xs={12}>
                             <Grid container justifyContent="center" spacing={0}>
@@ -103,20 +102,21 @@ const Post = (props) => {
                                                 </Button>
                                             </Grid>
                                             <Grid item xs={12} md={12} style={{marginTop:'4%'}}>
-                                                {currentPost.comments.map((comment, index) => {
-                                                    return (
-                                                        <Grid container key={comment._id} style={{border:'1px solid #808080a1',paddingLeft:'10px', marginBottom:'10px'}}>
-                                                        <Grid item xs={8} md={10}>
-                                                        <p>{comment.comment}</p>
-                                                        </Grid>
-                                                        <Grid item xs={4} md={2}>
-                                                        <p style={{fontSize:'10px', color:'gray'}}>{`Commented By ${comment.user.firstName}`}</p>
-                                                        <p style={{fontSize:'10px', color:'gray'}}>{`${Moment(currentPost.updatedOn).format("MMM Do YY")}`}</p>
+                                                {
+                                                    currentPost.comments && currentPost.comments.map((comment, index) => {
+                                                        return (
+                                                            <Grid container key={index} style={{border:'1px solid #808080a1',paddingLeft:'10px', marginBottom:'10px'}}>
+                                                            <Grid item xs={8} md={10}>
+                                                            <p>{comment.comment}</p>
                                                             </Grid>
-                                                        </Grid>
-                                                    );
-                                                })}
-
+                                                            <Grid item xs={4} md={2}>
+                                                            <p style={{fontSize:'10px', color:'gray'}}>{`Commented By ${comment.user.firstName}`}</p>
+                                                            <p style={{fontSize:'10px', color:'gray'}}>{`${Moment(currentPost.updatedOn).format("MMM Do YY")}`}</p>
+                                                                </Grid>
+                                                            </Grid>
+                                                        );
+                                                    })
+                                                }
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -124,8 +124,6 @@ const Post = (props) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                }
-
             </div>
         </div>
     )

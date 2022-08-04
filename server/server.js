@@ -3,8 +3,10 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import dontenv from "dotenv";
+import {graphqlHTTP} from "express-graphql"
 import dbConnection from "./db.js";
 import routes from "./routes/routes.js"
+import schema from "./schema/schema.js"
 
 dontenv.config();
 const app = express();
@@ -17,6 +19,13 @@ app.use(
   cors({
     origin: true,
     credentials: true
+  })
+);
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
   })
 );
 

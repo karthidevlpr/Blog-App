@@ -7,6 +7,7 @@ import MuiAlert from '@mui/material/Alert';
 import Moment from "moment"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { useQuery, useMutation } from '@apollo/client';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -20,7 +21,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { createPost, getMyPost, updatePost, deletePost } from '../../state/actions/blog';
+import { createPost, updatePost, deletePost } from '../../state/actions/blog';
+import { GET_POSTS_BY_USER } from '../../graphql/queries/postQueries';
+import { DELETE_POST } from '../../graphql/mutations/postMutations';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -63,12 +66,17 @@ const MyPost = () => {
     boxShadow: 24,
     p: 4,
   };
+  
+  const { data } = useQuery(GET_POSTS_BY_USER, { variables: { userId : user._id} });
+  const [deletePost] = useMutation(DELETE_POST, {
+    variables: { id: currentPostId }
+  });
 
   useEffect(() => {
-    if (user._id) {
-      dispatch(getMyPost(user._id))
+    if(data) {
+      dispatch({type: 'GET_MY_POST', params: {posts: data.postListByUser}})
     }
-  }, [dispatch, user])
+  }, [dispatch, user, data])
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -119,7 +127,8 @@ const MyPost = () => {
   };
 
   const handleAlertAgree = async () => {
-    await dispatch(deletePost(currentPostId))
+    deletePost(currentPostId)
+    dispatch({type: 'DELETE_POST', params: {id: currentPostId}})
     setOpenAlert(false);
     setCurrentPostId('')
     setToast({ open: true, message: `Post deleted successfully` })
@@ -147,7 +156,7 @@ const MyPost = () => {
               <Card key={post._id} sx={{ minWidth: 220, maxWidth: 220, margin: 2 }}>
                 <CardHeader
                   title={post.title}
-                  subheader={Moment(post.updatedOn).format("MMM Do YY")}
+                  subheader={Moment.unix(post.updatedOn/1000).format("DD MMM YYYY")}
                 />
                 <CardContent>
                   <Typography variant="body2" color="text.secondary">

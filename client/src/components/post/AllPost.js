@@ -8,8 +8,10 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import {useNavigate} from 'react-router-dom'
 import Moment from "moment"
+import { useQuery } from '@apollo/client';
 
-import {getAllPost, getPost} from '../../state/actions/blog';
+import {getPost} from '../../state/actions/blog';
+import { GET_POSTS } from '../../graphql/queries/postQueries';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -23,10 +25,13 @@ const AllPost = () => {
 
   const state = useSelector((state) => state)
   const posts = state.blog.allPost
+  const { data } = useQuery(GET_POSTS);
 
   useEffect(() => {
-      dispatch(getAllPost())
-  }, [dispatch])
+    if(data) {
+      dispatch({type: 'GET_ALL_POST', params: {posts: data.posts}})
+    }
+  }, [dispatch, data])
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -60,7 +65,7 @@ const AllPost = () => {
               <Card key={post._id} sx={{ minWidth: 220, maxWidth: 220, margin: 2 }} onClick={handleViewPost.bind(this, post)}>
                 <CardHeader
                   title={post.title}
-                  subheader={`${Moment(post.createdOn).format("MMM Do YY")}  created by ${post.user.firstName}`}
+                  subheader={`${Moment.unix(post.createdOn/1000).format("DD MMM YYYY")}  created by ${post.user.firstName}`}
                 />
                 <CardContent>
                   <Typography variant="body2" color="text.secondary">

@@ -1,4 +1,7 @@
 import * as api from '../api/index';
+import { useQuery, useLazyQuery } from '@apollo/client';
+import { GET_POSTS_BY_USER } from '../../graphql/queries/postQueries';
+
 
 export const createPost = (post) => async (dispatch) => {
   try {
@@ -10,7 +13,7 @@ export const createPost = (post) => async (dispatch) => {
   }
 }
 
-export const getMyPost = (id) => async (dispatch) => {
+export const getMyPost = (id) => async (dispatch, queries) => {
   try {
     const {data} = await api.getMyPost(id)
     dispatch({type: 'GET_MY_POST', params: {posts: data}})

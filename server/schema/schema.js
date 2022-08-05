@@ -1,45 +1,10 @@
 import { GraphQLObjectType,
     GraphQLID,
-    GraphQLString,
     GraphQLSchema,
     GraphQLList,
-    GraphQLInt,
-    GraphQLBoolean
 } from "graphql";
 import Blog from "../models/blogModel.js";
-import User from "../models/userModel.js";
-
-
-// Post Type
-const PostType = new GraphQLObjectType({
-    name:"post",
-    fields: () => ({
-        id: { type: GraphQLID },
-        title: { type: GraphQLString },
-        description: { type: GraphQLString },
-        active: { type: GraphQLBoolean },
-        createdOn: { type: GraphQLString },
-        updatedOn: { type: GraphQLString },
-        user: {
-            type: UserType,
-            resolve(parent, args) {
-              return User.findById(parent.user);
-        }
-        }
-    })
-})
-
-// User Type
-const UserType = new GraphQLObjectType({
-    name:"User",
-    fields: () => ({
-        id: { type: GraphQLID },
-        firstName: { type: GraphQLString },
-        lastName: { type: GraphQLString },
-        createdOn: { type: GraphQLString },
-        email: { type: GraphQLString },
-    })
-})
+import {PostType} from "./typeDefs/post.js";
 
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType",
@@ -49,12 +14,32 @@ const RootQuery = new GraphQLObjectType({
             args: {userId: { type: GraphQLID }},
             resolve(parent, args) {
                 return Blog.find({user: args.userId, active: true});
-            },
+            }},
+        posts: {
+            type: new GraphQLList(PostType),
+            resolve(parent, args) {
+                return Blog.find({active: true});
             }
+        }
+
         }
 })
 
+const mutation =  new GraphQLObjectType ({
+    name: "Mutation",
+    fields: {
+        deletePost: {
+            type: PostType,
+            args: {id: {type: GraphQLID}},
+            resolve(parent, args) {
+                return Blog.findByIdAndUpdate(args.id, {$set: {active : false, updatedOn: Date.now()}}, {new: true})
+            }
+        }
+    }
+})
+
 export default new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation
   });
   

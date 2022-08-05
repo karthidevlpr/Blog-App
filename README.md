@@ -1,6 +1,8 @@
 # Blog-App
 Sample Blog Post Application
 
+Branch Info : This branch contain the GraphQL integration, we used the express-graphql npm in server side and Apollo Client in frontend side , Added Graphql API instead of this three Rest API (getPostByUser, getAllPost, deletePost)
+
 Tech: MERN, Material UI
 
 

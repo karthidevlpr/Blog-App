@@ -3,10 +3,11 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import dontenv from "dotenv";
-import {graphqlHTTP} from "express-graphql"
 import dbConnection from "./db.js";
 import routes from "./routes/routes.js"
-import schema from "./schema/schema.js"
+import {ApolloServer} from "apollo-server-express"
+import typeDefs from "./schema/typeDefs.js"
+import resolvers from "./schema/resolvers.js"
 
 dontenv.config();
 const app = express();
@@ -21,13 +22,13 @@ app.use(
     credentials: true
   })
 );
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-  })
-);
+
+const startApolloServer = async () => {
+  const apolloServer = new ApolloServer({typeDefs, resolvers})
+  await apolloServer.start()
+  apolloServer.applyMiddleware({app})
+}
+await startApolloServer()
 
 routes(app);
 

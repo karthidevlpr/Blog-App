@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogapp
+  labels:
+    app: blogapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blogapp
+  template:
+    metadata:
+      labels:
+        app: blogapp 
+    spec:
+      containers:
+      - name: blogapp
+        image: karthidevlpr/blog-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7000

@@ -18,12 +18,7 @@ export default (app) => {
   }));
 
   app.use(router.get('/testing', async (req, res) =>  {
-
-    const test = otha.poda
-      // var test =  await fs.readFileSync('./otha.js')
-    res.status(200).json({"asas":"sasas"})
-
-   
+    res.status(200).json({"Testing":"Testing"})
   }));
 
   app.use(router.all('/kubeapp', (req, res) => {

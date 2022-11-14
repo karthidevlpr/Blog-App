@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: blogapp
-        image: karthidevlpr/blog-app:latest
+        image: blogapp-kt:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 7000

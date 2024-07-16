@@ -8,12 +8,24 @@ pipeline {
     }
 
     stages {
-        stage('echo') {
+        stage('npm install') {
       steps {
-        // Check out the repository from GitHub
-        sh 'echo "karthi"'
+        // Change to the client directory and install dependencies
+        dir('server') {
+          sh 'npm install'
+        }
       }
         }
+
+        stage('run server') {
+      steps {
+        // Change to the client directory and install dependencies
+        dir('server') {
+          sh 'node server.js'
+        }
+      }
+        }
+
     }
 
     post {

@@ -8,10 +8,10 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('echo') {
       steps {
         // Check out the repository from GitHub
-        git credentialsId: '42d65627-cfa6-4e85-abaf-d20f6dcccfdf', url: 'https://github.com/karthidevlpr/Blog-App.git'
+        sh 'echo "karthi"'
       }
         }
     }

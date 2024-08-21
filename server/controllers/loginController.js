@@ -24,7 +24,7 @@ export const authenticate = async (req, res) => {
   let { email, password } = req.body
 
   try {
-    let user = await User.findOne({ email: new RegExp('^' + email + '$', 'i'), active: true });
+    let user = await User.findOne({ email: new RegExp('^' + email + '$', 'i')});
     if (_.isNull(user)) {
       res.status(httpStatus.NOT_FOUND).json({ error: `Email doesn't exist` });
       return;
@@ -40,6 +40,7 @@ export const authenticate = async (req, res) => {
     };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
       if (err) throw err;
+      console.log(token)
       res.status(httpStatus.OK).json({ message: 'You are successfully logged in', token: token, user: user });
     }
     );

@@ -6,7 +6,7 @@ const router = express.Router()
 
 export default (app) => {
 
-  app.use(router.all('/', (req, res) => {
+  app.use(router.get('/', (req, res) => {
     res.send('API server for Blog App')
   }));
 

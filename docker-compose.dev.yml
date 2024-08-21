@@ -1,0 +1,34 @@
+version: "3"
+services:
+  blog-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    networks:
+      blog-app:
+  blog-server:
+    build: ./server
+    ports:
+      - "9000:9000"
+    depends_on:
+      - blog-mongo
+    networks: 
+      blog-app:
+  blog-mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      blog-app:
+    volumes:
+      - mongo-data:/data/db
+networks:
+  blog-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local

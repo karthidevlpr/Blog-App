@@ -2,13 +2,13 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import dontenv from "dotenv";
+import "dotenv/config";
 import dbConnection from "./db.js";
 import routes from "./routes/routes.js"
 
-dontenv.config();
+console.log(process.env.PORT)
 const app = express();
-const PORT = process.env.PORT|| 7000;
+const PORT = process.env.PORT|| 9000;
 
 app.use(bodyParser.json({extended: true, limit:'30mb'}))
 app.use(bodyParser.urlencoded({extended: true, limit:'30mb'}));

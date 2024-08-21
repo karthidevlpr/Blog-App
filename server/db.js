@@ -1,8 +1,8 @@
 import mongoose from "mongoose"; 
 
 export default () => {
-    var dbURI = `${process.env.MONGODB_ATLAS_URI}`; 
-     
+    var dbURI = `${process.env["MONGO_IMAGE_URI"]}/${process.env["DB_NAME"]}`;
+
     // CONNECTION EVENTS
     mongoose.connection.on('connected', function () {
       console.log('Mongoose default connection open to ' + dbURI);
@@ -22,8 +22,8 @@ export default () => {
         console.log('Mongoose default connection disconnected through app termination'); 
         process.exit(0); 
       }); 
-    }); 
+    });
 
-    return mongoose.connect(dbURI,{ useNewUrlParser: true, useUnifiedTopology: true }); 
+    return mongoose.connect(dbURI);
 
 }

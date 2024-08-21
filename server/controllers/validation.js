@@ -41,6 +41,7 @@ export const validatingErrors = (err) => {
 };
 
 export const errorHandling = (err, res) => {
+  console.log(err)
 
   switch (err.name) {
     case 'ValidationError':

@@ -24,7 +24,7 @@ export const authenticate = async (req, res) => {
   let { email, password } = req.body
 
   try {
-    let user = await User.findOne({ email: new RegExp('^' + email + '$', 'i'), active: true });
+    let user = await User.findOne({ email: new RegExp('^' + email + '$', 'i')});
     if (_.isNull(user)) {
       res.status(httpStatus.NOT_FOUND).json({ error: `Email doesn't exist` });
       return;

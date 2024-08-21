@@ -1,7 +1,7 @@
 import mongoose from "mongoose"; 
 
 export default () => {
-    var dbURI = `${process.env.MONGODB_ATLAS_URI}`; 
+    var dbURI = `${process.env.MONGODB_URI}/${process.env.DB_NAME}`; 
      
     // CONNECTION EVENTS
     mongoose.connection.on('connected', function () {
@@ -24,6 +24,6 @@ export default () => {
       }); 
     }); 
 
-    return mongoose.connect(dbURI,{ useNewUrlParser: true, useUnifiedTopology: true }); 
+    return mongoose.connect(dbURI); 
 
 }

@@ -8,7 +8,7 @@ import routes from "./routes/routes.js"
 
 dontenv.config();
 const app = express();
-const PORT = process.env.PORT|| 7000;
+const PORT = process.env.PORT|| 7001;
 
 app.use(bodyParser.json({extended: true, limit:'30mb'}))
 app.use(bodyParser.urlencoded({extended: true, limit:'30mb'}));
